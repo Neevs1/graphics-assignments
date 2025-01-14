@@ -37,14 +37,14 @@ void display(void){
    glVertex2i(27,225);
    glVertex2i(27,225);
    glVertex2i(500,225);
-   glVertex2i(425,250);
-   glVertex2i(425,200);
-   glVertex2i(425,250);
-   glVertex2i(375,250);
-   glVertex2i(375,250);
-   glVertex2i(375,200);
-   glVertex2i(375,200);
-   glVertex2i(425,200);
+   glVertex2i(430,260);
+   glVertex2i(430,190);
+   glVertex2i(430,260);
+   glVertex2i(370,260);
+   glVertex2i(370,260);
+   glVertex2i(370,190);
+   glVertex2i(370,190);
+   glVertex2i(430,190);
    
   glEnd();
   
@@ -58,7 +58,7 @@ int main(int argc, char** argv){
   glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
   glutInitWindowSize(640,480);
   glutInitWindowPosition(100,150);
-  glutCreateWindow("My first program");
+  glutCreateWindow("Assignment 1");
   glutDisplayFunc(display);
   myInit();
   glutMainLoop();
