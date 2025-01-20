@@ -6,8 +6,8 @@
 
 
 #include <GL/glut.h>
-#include <math.h>
-#define pi 3.14159
+#include <iostream>
+
 
 void myInit(void){
   glClearColor(0.0,1.0,1.0,1.0);
@@ -20,7 +20,8 @@ void myInit(void){
 
 void display(void){
   glClear(GL_COLOR_BUFFER_BIT);
-  /*glBegin(GL_LINES);
+  /*
+  glBegin(GL_LINES);
    glVertex2i(200,360);
    glVertex2i(400,360);
    glVertex2i(400,360);
@@ -46,7 +47,8 @@ void display(void){
    glVertex2i(370,190);
    glVertex2i(430,190);
    
-  glEnd();*/
+  glEnd();
+  */
   glColor3f(0.0f,0.0f,1.0f);
   glBegin(GL_POLYGON);
    glVertex2i(200,360);
@@ -65,12 +67,11 @@ void display(void){
    glVertex2i(500,225);
    glEnd();
    glColor3f(0.0f,0.0f,1.0f);
-  glBegin(GL_POLYGON);
+   glBegin(GL_POLYGON);
    glVertex2i(125,300);
    glVertex2i(25,295);
    glVertex2i(25,225);
    glVertex2i(125,225);
-   
    glEnd();
   glColor3f(1.0f,0.0f,0.0f);
   glBegin(GL_POLYGON);
@@ -101,7 +102,7 @@ void display(void){
    glVertex2i(100,200);
    glVertex2i(100,250);
   glEnd();
-  
+  glFlush();
   
 
 }
