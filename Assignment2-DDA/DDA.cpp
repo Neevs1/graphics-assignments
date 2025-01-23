@@ -56,7 +56,7 @@ glFlush();
 }
 void display() {
 glClear(GL_COLOR_BUFFER_BIT);
-ddaLine(100, 100, 500, 50);
+ddaLine(50, 50, 100, 100);
 glutSwapBuffers();
 }
 int main(int argc, char** argv) {
