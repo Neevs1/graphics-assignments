@@ -46,17 +46,24 @@ float y = y1;
 sign(DX);
 sign(DY);
 glBegin(GL_POINTS);
+int counter = 0;
 for (int i = 0; i <= length; i++) {
-    if(int(x)%4){
+    if(counter<3){
+        counter++;
        glColor3f(0.0, 0.0, 0.0);    
        glVertex2i(round(x), round(y));
       
 
-    }else(int(x)%4){
+    }else if (counter==3||counter==4) {
+        counter++;
         glColor3f(1.0,1.0,1.0);
         glVertex2i(round(x),round(y));
         
         
+    }else if (counter==5){
+        counter=0;
+        glColor3f(1.0,1.0,1.0);
+        glVertex2i(round(x),round(y));
     }
   
 x +=(DX);
