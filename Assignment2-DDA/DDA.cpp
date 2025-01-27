@@ -12,7 +12,7 @@ using namespace std;
 void myInit(void){
 glClearColor(1.0,1.0,1.0,1.0);
 glColor3f(0.0f,0.0f,0.0f);
-glPointSize(4.0);
+glPointSize(2.0);
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
 gluOrtho2D(0.0,640.0,0.0,480.0);
@@ -42,12 +42,23 @@ float DX = dx / float(length);
 float DY = dy / float(length);
 float x = x1;
 float y = y1;
-glColor3f(1.0, 0.0, 0.0);
+
 sign(DX);
 sign(DY);
 glBegin(GL_POINTS);
 for (int i = 0; i <= length; i++) {
-glVertex2i(round(x), round(y));
+    if(int(x)%4){
+       glColor3f(0.0, 0.0, 0.0);    
+       glVertex2i(round(x), round(y));
+      
+
+    }else(int(x)%4){
+        glColor3f(1.0,1.0,1.0);
+        glVertex2i(round(x),round(y));
+        
+        
+    }
+  
 x +=(DX);
 y +=(DY);
 }
@@ -56,7 +67,7 @@ glFlush();
 }
 void display() {
 glClear(GL_COLOR_BUFFER_BIT);
-ddaLine(50, 50, 100, 100);
+ddaLine(200, 300, 500, 300);
 glutSwapBuffers();
 }
 int main(int argc, char** argv) {
