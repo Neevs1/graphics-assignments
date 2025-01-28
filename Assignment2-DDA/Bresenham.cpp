@@ -57,7 +57,7 @@ for (int i = 0; i < dx; i++) {
         cout<<x<<" "<<y<<endl;
         e = e - 2 * dx;
     }
-    if(interchange = 1){
+    if(interchange == 1){
         y = y + s2;
     }else{
         x=x+s1;
