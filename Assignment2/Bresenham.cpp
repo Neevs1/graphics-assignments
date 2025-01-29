@@ -1,7 +1,7 @@
 /*
   Author - Neevan Redkar
   Subject - Computer Graphics
-  Title - DDA
+  Title - Bresenham
 
 */
 
