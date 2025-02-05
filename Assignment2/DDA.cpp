@@ -29,6 +29,15 @@ return 1;
 }
 }
 void ddaLine(int x1, int y1, int x2, int y2) {
+    if(x1==x2&&y1==y2){
+    glBegin(GL_POINTS);
+    glVertex2i(x1, y1);
+    glEnd();
+    glFlush();
+    cout<<"Error - Origin and Destination are same"<<endl;
+    return;
+
+}
 int dx = x2 - x1;
 int dy = y2 - y1;
 int length;
