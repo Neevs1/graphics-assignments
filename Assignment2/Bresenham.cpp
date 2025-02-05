@@ -26,6 +26,15 @@ return 1;
 
 }
 void BresenhamLine(int x1, int y1, int x2, int y2) {
+if(x1==x2&&y1==y2){
+    glBegin(GL_POINTS);
+    glVertex2i(x1, y1);
+    glEnd();
+    glFlush();
+    cout<<"Error - Origin and Destination are same"<<endl;
+    return;
+
+}
 int x=x1,y=y1;
 int dx = (x2 - x1);
 int dy = (y2 - y1);
@@ -70,14 +79,14 @@ glFlush();
 }
 void display() {
 glClear(GL_COLOR_BUFFER_BIT);
-BresenhamLine(10, 5, 15, 9);
+BresenhamLine(10, 5, 10, 5);
 glutSwapBuffers();
 }
 int main(int argc, char** argv) {
 glutInit(&argc, argv);
 glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 glutInitWindowSize(640, 480);
-glutCreateWindow("DDA Line Drawing");
+glutCreateWindow("Bresenham Line Drawing");
 myInit();
 glutDisplayFunc(display);
 glutMainLoop();
