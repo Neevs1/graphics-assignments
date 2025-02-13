@@ -15,7 +15,7 @@ glColor3f(0.0f,0.0f,0.0f);
 glPointSize(2.0);
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
-gluOrtho2D(0.0,640.0,0.0,480.0);
+gluOrtho2D(-320.0,320.0,-240.0,240.0);
 }
 float sign(float x){
 if(x<0){
@@ -57,23 +57,11 @@ sign(DY);
 glBegin(GL_POINTS);
 int counter = 0;
 for (int i = 0; i <= length; i++) {
-    if(counter<3){
-        counter++;
+    
        glColor3f(0.0, 0.0, 0.0);    
        glVertex2i(round(x), round(y));
       
 
-    }else if (counter==3||counter==4) {
-        counter++;
-        glColor3f(1.0,1.0,1.0);
-        glVertex2i(round(x),round(y));
-        
-        
-    }else if (counter==5){
-        counter=0;
-        glColor3f(1.0,1.0,1.0);
-        glVertex2i(round(x),round(y));
-    }
   
 x +=(DX);
 y +=(DY);
@@ -81,9 +69,15 @@ y +=(DY);
 glEnd();
 glFlush();
 }
+
+void plotAxis(){
+    ddaLine(-320,0,320,0);
+    ddaLine(0,-240,0,240);
+}
 void display() {
 glClear(GL_COLOR_BUFFER_BIT);
-ddaLine(200, 300, 500, 300);
+ddaLine(200, 150, 320, 150);
+plotAxis();
 glutSwapBuffers();
 }
 int main(int argc, char** argv) {
