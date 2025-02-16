@@ -180,7 +180,7 @@ ddaLine(250, -200, 275, -150);
 ddaLine(150, -150, 150, -50);
 ddaLine(75, -112, 225, -112);
 ddaLine(75, -112, 150, -50);
-ddaLine(150, -50, 225, -112);
+ddaLine(150, -50, 225, -112);//boat ends here
 plotAxis();
 glutSwapBuffers();
 }
