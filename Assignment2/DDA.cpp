@@ -12,7 +12,6 @@ using namespace std;
 void myInit(void){
 glClearColor(1.0,1.0,1.0,1.0);
 glColor3f(0.0f,0.0f,0.0f);
-glPointSize(2.0);
 glMatrixMode(GL_PROJECTION);
 glLoadIdentity();
 gluOrtho2D(-320.0,320.0,-240.0,240.0);
@@ -30,6 +29,7 @@ return 1;
 }
 void ddaLine(int x1, int y1, int x2, int y2) {
     if(x1==x2&&y1==y2){
+      glPointSize(2.0);
     glBegin(GL_POINTS);
     glVertex2i(x1, y1);
     glEnd();
@@ -54,6 +54,7 @@ float y = y1;
 
 sign(DX);
 sign(DY);
+glPointSize(2.0);
 glBegin(GL_POINTS);
 
 for (int i = 0; i <= length; i++) {
@@ -70,8 +71,55 @@ glEnd();
 glFlush();
 }
 
+
+void SolidddaLine(int x1, int y1, int x2, int y2) {
+  if(x1==x2&&y1==y2){
+  glPointSize(5.0);
+  glBegin(GL_POINTS);
+  glVertex2i(x1, y1);
+  glEnd();
+  glFlush();
+  cout<<"Error - Origin and Destination are same"<<endl;
+  return;
+
+}
+int dx = x2 - x1;
+int dy = y2 - y1;
+int length;
+if(abs(dx)>abs(dy)){
+length=dx;
+}
+else{
+length=dy;
+}
+float DX = dx / float(length);
+float DY = dy / float(length);
+float x = x1;
+float y = y1;
+
+sign(DX);
+sign(DY);
+glPointSize(5.0);
+glBegin(GL_POINTS);
+
+for (int i = 0; i <= length; i++) {
+  
+     glColor3f(0.0, 0.0, 0.0);    
+     glVertex2i(round(x), round(y));
+    
+
+
+x +=(DX);
+y +=(DY);
+}
+glEnd();
+glFlush();
+}
+
+
 void dotted_ddaLine(int x1, int y1, int x2, int y2) {
   if(x1==x2&&y1==y2){
+    glPointSize(2.0);
   glBegin(GL_POINTS);
   glVertex2i(x1, y1);
   glEnd();
@@ -117,6 +165,7 @@ glFlush();
 
 void dashed_ddaLine(int x1, int y1, int x2, int y2) {
   if(x1==x2&&y1==y2){
+    glPointSize(2.0);
     glBegin(GL_POINTS);
     glVertex2i(x1, y1);
     glEnd();
@@ -141,6 +190,7 @@ float y = y1;
 
 sign(DX);
 sign(DY);
+glPointSize(2.0);
 glBegin(GL_POINTS);
 int counter = 0;
 for (int i = 0; i <= length; i++) {
@@ -173,6 +223,7 @@ glClear(GL_COLOR_BUFFER_BIT);
 ddaLine(100, 75,200, 150);
 dotted_ddaLine(-50, -50, -20, -50);
 dashed_ddaLine(-200, 100, -50, 100);
+SolidddaLine(50, 50, 100, 50);
 ddaLine(25, -150, 275, -150);//boat starts here
 ddaLine(50, -200, 250, -200);
 ddaLine(50, -200, 25, -150);
