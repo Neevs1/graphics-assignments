@@ -9,6 +9,7 @@
 #include<cmath>
 #include <iostream>
 using namespace std;
+int choice =0;
 void myInit(void){
 glClearColor(1.0,1.0,1.0,1.0);
 glColor3f(0.0f,0.0f,0.0f);
@@ -271,7 +272,7 @@ void plotAxis(){
 }
 void display() {
 glClear(GL_COLOR_BUFFER_BIT);
-ddaLine(100, 75,200, 150);
+/*ddaLine(100, 75,200, 150);
 dotted_ddaLine(-320, -50, -20, -50);
 dashed_ddaLine(-200, 100, -50, 100);
 SolidddaLine(50, 50, 100, 50);
@@ -283,16 +284,80 @@ ddaLine(250, -200, 275, -150);
 ddaLine(150, -150, 150, -50);
 ddaLine(150, -112, 225, -112);
 
-ddaLine(150, -50, 225, -112);//boat ends here
+ddaLine(150, -50, 225, -112);//boat ends here */
 plotAxis();
+ switch(choice){
+  case 1:
+  ddaLine(100, 75,200, 150);
+  break;
+  case 2:
+  dotted_ddaLine(-320, -50, -20, -50);
+  break;
+  case 3:
+  dashed_ddaLine(-200, 100, -50, 100);
+  break;
+  case 4:
+  SolidddaLine(50, 50, 100, 50);
+  break;
+  case 5:
+  centreDottedddaLine(-250,-50,50,-250);
+  break;
+  case 6:
+  ddaLine(25, -150, 275, -150);//boat starts here
+ddaLine(50, -200, 250, -200);
+ddaLine(50, -200, 25, -150);
+ddaLine(250, -200, 275, -150);
+ddaLine(150, -150, 150, -50);
+ddaLine(150, -112, 225, -112);
+
+ddaLine(150, -50, 225, -112);//boat ends here
+break;
+
+
+ }
+glFlush();
 glutSwapBuffers();
 }
+
+void processMenuEvents(int option) {
+switch (option) {
+  case 1:
+    choice = 1;
+    break;
+  case 2:
+    choice = 2;
+    break;
+  case 3:
+    choice =3;
+    break;
+  case 4:
+    choice=4;
+    break;
+  case 5:
+   choice=5;
+    break;
+  case 6:
+    choice=6;
+    break;
+}
+
+}
+
 int main(int argc, char** argv) {
 glutInit(&argc, argv);
 glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 glutInitWindowSize(640, 480);
 glutCreateWindow("DDA Line Drawing");
 myInit();
+
+glutCreateMenu(processMenuEvents);
+glutAddMenuEntry("DDA Line", 1);
+glutAddMenuEntry("Dotted DDA Line", 2);
+glutAddMenuEntry("Dashed DDA Line", 3);
+glutAddMenuEntry("Solid DDA Line", 4);
+glutAddMenuEntry("Centre Dotted DDA Line", 5);
+glutAddMenuEntry("Boat", 6);
+glutAttachMenu(GLUT_RIGHT_BUTTON);
 glutDisplayFunc(display);
 glutMainLoop();
 return 0;
