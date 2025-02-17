@@ -8,11 +8,11 @@
 
 void myInit(void){
   glClearColor(1.0,1.0,1.0,1.0);
-  glColor3f(0.0f,0.0f,0.0f);
+  
   glPointSize(4.0);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluOrtho2D(0.0,640.0,0.0,480.0);
+  gluOrtho2D(0.0,1280.0,0.0,720.0);
 }
 
 void bresemhamCirc(int rad,int h,int k){
@@ -46,14 +46,18 @@ void bresemhamCirc(int rad,int h,int k){
 
 void display(void){
     glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(0.0f,0.0f,0.0f);
     bresemhamCirc(100,200,200);
+    glColor3f(1.0f,0.0f,0.0f);
+    bresemhamCirc(100,500,200);
+
     glFlush();
 }
 
 int main(int argc, char** argv){
   glutInit(&argc,argv);
   glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
-  glutInitWindowSize(640,480);
+  glutInitWindowSize(1280,720);
   glutInitWindowPosition(100,150);
   glutCreateWindow("Bresenham Circle Drawing");
   glutDisplayFunc(display);
