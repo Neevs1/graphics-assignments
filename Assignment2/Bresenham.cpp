@@ -22,9 +22,7 @@ return-1;
 
 return 1;
 
-void plotAxes{
-    
-}
+
 
 }
 void BresenhamLine(int x1, int y1, int x2, int y2) {
@@ -205,6 +203,71 @@ void dashedBresenhamLine(int x1, int y1, int x2, int y2) {
         }
         glFlush();
         }
+void centreDottedBresenhamLine(int x1, int y1, int x2, int y2) {
+            if(x1==x2&&y1==y2){
+                glPointSize(2.0);
+                glBegin(GL_POINTS);
+                glColor3f(0.0f,0.0f,0.0f);
+               
+                glVertex2i(x1, y1);
+                glEnd();
+                glFlush();
+                cout<<"Error - Origin and Destination are same"<<endl;
+                return;
+            
+            }
+            int x=x1,y=y1;
+            int dx = abs(x2 - x1);
+            int dy = abs(y2 - y1);
+            int s1 = sign(x2, x1);
+            int s2 = sign(y2, y1);
+            int interchange;
+            if (dy > dx) {
+                int temp = dx;
+                dx = dy;
+                dy = temp;
+                interchange = 1;
+            }else{
+                interchange = 0;
+            }
+            int e = 2 * dy - dx;
+            glPointSize(2.0);
+            glBegin(GL_POINTS);
+            glColor3f(0.0f,0.0f,0.0f);
+            
+            glVertex2i(x, y);
+            glEnd();
+            for (int i = 0; i < dx; i++) {
+                glPointSize(2.0);
+                glBegin(GL_POINTS);
+                if (i % 10 < 5 || i % 10 == 7) {
+                    glColor3f(0.0f, 0.0f, 0.0f);  // Black
+                    glVertex2i(x, y);
+                } else {
+                    glColor3f(1.0f, 1.0f, 1.0f);  // White
+                    glVertex2i(x, y);
+                }
+                glEnd();
+                while (e >= 0) {
+                    if (interchange == 1) {
+                        x = x + s1;
+                    } else {
+                        y = y + s2;
+                    }
+                   // cout<<x<<" "<<y<<endl;
+                   e -= 2 * dx; 
+                }
+                if(interchange == 1){
+                    y = y + s2;
+                }else{
+                    x=x+s1;
+                }
+                //cout<<x<<" "<<y<<endl;
+                e+= 2*dy;
+            
+            }
+            glFlush();
+            }
 void SolidBresenhamLine(int x1, int y1, int x2, int y2) {
             if(x1==x2&&y1==y2){
                glPointSize(5.0);
@@ -276,6 +339,7 @@ BresenhamLine(-100, 50, -100, 150);
 dottedBresenhamLine(-200, 250, -100, 250);
 dashedBresenhamLine(-250, -50, -50, -25);
 SolidBresenhamLine(50, -150, 250, -150);
+centreDottedBresenhamLine(50, -50, 250, -250);
 //pattern starts here
 BresenhamLine(160,300,560,300);
 BresenhamLine(160,100,560,100);
