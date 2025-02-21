@@ -9,6 +9,7 @@
 #include<cmath>
 #include <iostream>
 using namespace std;
+int choice=0;
 void myInit(void){
 glClearColor(1.0,1.0,1.0,1.0);
 glMatrixMode(GL_PROJECTION);
@@ -335,12 +336,25 @@ void plotAxes(){
 
 void display() {
 glClear(GL_COLOR_BUFFER_BIT);
-BresenhamLine(-100, 50, -100, 150);
-dottedBresenhamLine(-200, 250, -100, 250);
-dashedBresenhamLine(-250, -50, -50, -25);
-SolidBresenhamLine(50, -150, 250, -150);
-centreDottedBresenhamLine(50, -50, 250, -250);
-//pattern starts here
+plotAxes();
+switch(choice){
+    case 1:
+    BresenhamLine(-100, 50, -100, 150);
+    break;
+    case 2:
+    dottedBresenhamLine(-200, 250, -100, 250);
+    break;
+    case 3:
+    dashedBresenhamLine(-250, -50, -50, -25);
+    break;
+    case 4:
+    SolidBresenhamLine(50, -150, 250, -150);
+    break;
+    case 5:
+    centreDottedBresenhamLine(50, -50, 250, -250);
+    break;
+    case 6:
+    //pattern starts here
 BresenhamLine(160,300,560,300);
 BresenhamLine(160,100,560,100);
 BresenhamLine(160,100,160,300);
@@ -353,15 +367,53 @@ BresenhamLine(260,250,460,250);
 BresenhamLine(260,150,460,150);
 BresenhamLine(260,150,260,250);
 BresenhamLine(460,150,460,250);//square inner ends here
-plotAxes();
+
+
+  break;
+  
+  
+   }
 glutSwapBuffers();
 }
+void processMenuEvents(int option) {
+    switch (option) {
+      case 1:
+        choice = 1;
+        break;
+      case 2:
+        choice = 2;
+        break;
+      case 3:
+        choice =3;
+        break;
+      case 4:
+        choice=4;
+        break;
+      case 5:
+       choice=5;
+        break;
+      case 6:
+        choice=6;
+        break;
+    }
+}
+
+
+
 int main(int argc, char** argv) {
 glutInit(&argc, argv);
 glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 glutInitWindowSize(1280, 720);
 glutCreateWindow("Bresenham Line Drawing");
 myInit();
+glutCreateMenu(processMenuEvents);
+glutAddMenuEntry("Bresenham Line", 1);
+glutAddMenuEntry("Dotted Bresenham Line", 2);
+glutAddMenuEntry("Dashed Bresenham Line", 3);
+glutAddMenuEntry("Solid Bresenham Line", 4);
+glutAddMenuEntry("Centre Dotted Bresenham Line", 5);
+glutAddMenuEntry("Pattern", 6);
+glutAttachMenu(GLUT_RIGHT_BUTTON);
 glutDisplayFunc(display);
 glutMainLoop();
 return 0;
