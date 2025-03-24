@@ -53,14 +53,17 @@ void boundaryfill(int x,int y){
         return;
     }
     getpixel(x,y,readpixel);
-    if(readpixel[0]!=boundaryColor[0]||readpixel[1]!=boundaryColor[1]||readpixel[2]!=boundaryColor[2]&&readpixel[0]!=fillColor[0]&&readpixel[1]!=fillColor[1]&&readpixel[2]!=fillColor[2]){
+    if (
+    (readpixel[0] != boundaryColor[0] || readpixel[1] != boundaryColor[1] || readpixel[2] != boundaryColor[2]) &&
+    (readpixel[0] != fillColor[0] || readpixel[1] != fillColor[1] || readpixel[2] != fillColor[2])
+){
         setpixel(x,y);
-        
+        // cout<<"x= "<<x<<" and y = "<<y<<endl; debug statement
 		boundaryfill(x+1,y);
 		boundaryfill(x,y+1);
+        boundaryfill(x,y-1);
 		boundaryfill(x-1,y);
-		boundaryfill(x,y-1);
-		glEnd();
+		
 		glFlush();
     }
 }
@@ -149,6 +152,11 @@ void display(void) {
     BresenhamLine(75, 250, 375, 250);
     BresenhamLine(75, 350, 375, 350);
     BresenhamLine(75, 450, 375, 450);
+
+    BresenhamLine(400,200,425,200);
+    BresenhamLine(400,200,400,225);
+    BresenhamLine(425,200,425,225);
+    BresenhamLine(400,225,425,225);
 
     glFlush();
 }
