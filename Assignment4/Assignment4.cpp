@@ -11,7 +11,7 @@ void myInit(void) {
     gluOrtho2D(0.0, 640.0, 0.0, 480.0);
 }
 
-int mx, my;
+int mx, my,choice=0;
 float boundaryColor[3] = {0, 0, 0}; // Boundary color (black)
 float interiorColor[3] = {1, 1, 1}; // Interior color (white)
 float fillColor[3] = {1, 0, 0};     // Fill color (red)
@@ -72,15 +72,21 @@ void myMouse(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
         mx = x;
         my = 480 - y; // Convert y-coordinate to OpenGL coordinate system
-        floodfill(mx, my);
+        switch(choice){
+            case 1:
+            floodfill(mx,my);
+            break;
+            case 2:
+            boundaryfill(mx,my);
+            break;
+        }
+        
     }
 }
 
 void myKeyboard(unsigned char key, int x, int y) {
     switch (key) {
-        case 'b':
-         boundaryfill(x,480-y);
-        case 'E':
+        case 'e':
             exit(0);
     }
 }
@@ -161,6 +167,21 @@ void display(void) {
     glFlush();
 }
 
+void menuOptions(int option){
+    switch(option){
+        case 1:
+        choice = option;
+        break;
+        case 2:
+        choice = option;
+        break;
+        case 3:
+        exit(0);
+
+    }
+
+}
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
@@ -170,6 +191,11 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);
     glutMouseFunc(myMouse);
     glutKeyboardFunc(myKeyboard);
+    glutCreateMenu(menuOptions);
+    glutAddMenuEntry("Flood Fill",1);
+    glutAddMenuEntry("Boundary Fill",2);
+    glutAddMenuEntry("Exit",3);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
     myInit();
     glutMainLoop();
     return 0;
