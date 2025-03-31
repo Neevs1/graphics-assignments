@@ -3,12 +3,12 @@
 using namespace std;
 
 void myInit(void) {
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glColor3f(0.0f, 0.0f, 0.0f);
-    glPointSize(1.0);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(0.0, 640.0, 0.0, 480.0);
+    glClearColor(1.0, 1.0, 1.0, 1.0); //Set bgcolor to white
+    glColor3f(0.0f, 0.0f, 0.0f); //set cursor colour to blackk
+    glPointSize(1.0); //set point size to 1
+    glMatrixMode(GL_PROJECTION); //set mode to projection
+    glLoadIdentity(); //Load identity matrix
+    gluOrtho2D(0.0, 640.0, 0.0, 480.0); //Set the drawing space
 }
 
 int mx, my,choice=0;
