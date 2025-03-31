@@ -15,6 +15,7 @@ int mx, my,choice=0;
 float boundaryColor[3] = {0, 0, 0}; // Boundary color (black)
 float interiorColor[3] = {1, 1, 1}; // Interior color (white)
 float fillColor[3] = {1, 0, 0};     // Fill color (red)
+float fillColor2[3] = {0,0,1};
 float readpixel[3];
 
 void getpixel(int x, int y, float *color) {
@@ -23,7 +24,7 @@ void getpixel(int x, int y, float *color) {
 
 void setpixel(int x,int y)
 {
-	glColor3fv(fillColor);
+	
 	glBegin(GL_POINTS);
 	glVertex2f(x,y);
 	glEnd();
@@ -35,7 +36,9 @@ void floodfill(int x,int y)
 	getpixel(x,y,readpixel);
 	if(readpixel[0]==interiorColor[0] && readpixel[1]==interiorColor[1] && readpixel[2]==interiorColor[2])
 	{
+        glColor3fv(fillColor);
 		setpixel(x,y);
+        
 		floodfill(x+1,y);
 		floodfill(x,y+1);
 		floodfill(x-1,y);
@@ -55,10 +58,11 @@ void boundaryfill(int x,int y){
     getpixel(x,y,readpixel);
     if (
     (readpixel[0] != boundaryColor[0] || readpixel[1] != boundaryColor[1] || readpixel[2] != boundaryColor[2]) &&
-    (readpixel[0] != fillColor[0] || readpixel[1] != fillColor[1] || readpixel[2] != fillColor[2])
+    (readpixel[0] != fillColor2[0] || readpixel[1] != fillColor2[1] || readpixel[2] != fillColor2[2])
 ){
+        glColor3fv(fillColor2);
         setpixel(x,y);
-        // cout<<"x= "<<x<<" and y = "<<y<<endl; debug statement
+        
 		boundaryfill(x+1,y);
 		boundaryfill(x,y+1);
         boundaryfill(x,y-1);
@@ -75,9 +79,11 @@ void myMouse(int button, int state, int x, int y) {
         switch(choice){
             case 1:
             floodfill(mx,my);
+            
             break;
             case 2:
             boundaryfill(mx,my);
+            
             break;
         }
         
@@ -148,22 +154,13 @@ void BresenhamLine(int x1, int y1, int x2, int y2) {
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Draw the grid
-    BresenhamLine(75, 50, 75, 450);
-    BresenhamLine(175, 50, 175, 450);
-    BresenhamLine(275, 50, 275, 450);
-    BresenhamLine(375, 50, 375, 450);
-    BresenhamLine(75, 50, 375, 50);
-    BresenhamLine(75, 150, 375, 150);
-    BresenhamLine(75, 250, 375, 250);
-    BresenhamLine(75, 350, 375, 350);
-    BresenhamLine(75, 450, 375, 450);
-
-    BresenhamLine(400,200,425,200);
-    BresenhamLine(400,200,400,225);
-    BresenhamLine(425,200,425,225);
-    BresenhamLine(400,225,425,225);
-
+    // Draw the star
+    BresenhamLine(50, 200, 250, 200);
+    BresenhamLine(75, 50, 150, 300);
+    BresenhamLine(150, 300, 225, 50);
+    BresenhamLine(75, 50, 250, 200);
+    BresenhamLine(50, 200, 225, 50);
+    
     glFlush();
 }
 
@@ -187,7 +184,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(640, 480);
     glutInitWindowPosition(100, 150);
-    glutCreateWindow("Assignment 1");
+    glutCreateWindow("Assignment 4");
     glutDisplayFunc(display);
     glutMouseFunc(myMouse);
     glutKeyboardFunc(myKeyboard);
