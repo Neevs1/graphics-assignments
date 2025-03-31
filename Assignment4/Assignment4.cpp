@@ -15,30 +15,31 @@ int mx, my,choice=0;
 float boundaryColor[3] = {0, 0, 0}; // Boundary color (black)
 float interiorColor[3] = {1, 1, 1}; // Interior color (white)
 float fillColor[3] = {1, 0, 0};     // Fill color (red)
-float fillColor2[3] = {0,0,1};
+float fillColor2[3] = {0,0,1}; //Secondary fill colour (blue)
 float readpixel[3];
 
 void getpixel(int x, int y, float *color) {
-    glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, color);
+    glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, color); //function to read the pixel
 }
 
-void setpixel(int x,int y)
-{
+void setpixel(int x,int y) //function for setting colour of a pixel
+{ 
 	
-	glBegin(GL_POINTS);
+	glBegin(GL_POINTS); //points mode
 	glVertex2f(x,y);
 	glEnd();
 	glFlush();
 }
 
-void floodfill(int x,int y)
+void floodfill(int x,int y) //four connected floodfill
 {
-	getpixel(x,y,readpixel);
-	if(readpixel[0]==interiorColor[0] && readpixel[1]==interiorColor[1] && readpixel[2]==interiorColor[2])
+	getpixel(x,y,readpixel); //scans colour of specific pixel
+	if(readpixel[0]==interiorColor[0] && readpixel[1]==interiorColor[1] && readpixel[2]==interiorColor[2]) //checks if pixel has same
+    //colour as defined interior colour. If yes, colours selected pixel
 	{
-        glColor3fv(fillColor);
+        glColor3fv(fillColor); //colours pixel red
 		setpixel(x,y);
-        
+        //four connected method
 		floodfill(x+1,y);
 		floodfill(x,y+1);
 		floodfill(x-1,y);
@@ -51,14 +52,16 @@ void floodfill(int x,int y)
 
 
 void boundaryfill(int x,int y){
-    
+    //four connected boundary fill
     if(x>640||x<0||y>480||y<0){
         return;
     }
-    getpixel(x,y,readpixel);
+    getpixel(x,y,readpixel);//scans pixel
     if (
     (readpixel[0] != boundaryColor[0] || readpixel[1] != boundaryColor[1] || readpixel[2] != boundaryColor[2]) &&
     (readpixel[0] != fillColor2[0] || readpixel[1] != fillColor2[1] || readpixel[2] != fillColor2[2])
+    /* checks for two conditions : given pixel is not same as fill colour,and given pixel is not boundary colour
+    */
 ){
         glColor3fv(fillColor2);
         setpixel(x,y);
@@ -78,11 +81,11 @@ void myMouse(int button, int state, int x, int y) {
         my = 480 - y; // Convert y-coordinate to OpenGL coordinate system
         switch(choice){
             case 1:
-            floodfill(mx,my);
+            floodfill(mx,my); //flood fills executed if option 1 selected
             
             break;
             case 2:
-            boundaryfill(mx,my);
+            boundaryfill(mx,my);//boundary fill executed if option 2 selected
             
             break;
         }
@@ -91,13 +94,13 @@ void myMouse(int button, int state, int x, int y) {
 }
 
 void myKeyboard(unsigned char key, int x, int y) {
-    switch (key) {
+    switch (key) { //use key e for exiting program
         case 'e':
             exit(0);
     }
 }
 
-void BresenhamLine(int x1, int y1, int x2, int y2) {
+void BresenhamLine(int x1, int y1, int x2, int y2) { //bresenham line from previous assignment
     if (x1 == x2 && y1 == y2) {
         glPointSize(2.0);
         glBegin(GL_POINTS);
@@ -152,7 +155,7 @@ void BresenhamLine(int x1, int y1, int x2, int y2) {
 }
 
 void display(void) {
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT); //sets background to white
 
     // Draw the star
     BresenhamLine(50, 200, 250, 200);
@@ -161,18 +164,19 @@ void display(void) {
     BresenhamLine(75, 50, 250, 200);
     BresenhamLine(50, 200, 225, 50);
     
-    glFlush();
+    glFlush(); 
 }
 
 void menuOptions(int option){
+    //controls the menu
     switch(option){
-        case 1:
+        case 1: //sets choice to 1
         choice = option;
         break;
-        case 2:
+        case 2: //sets choice to2
         choice = option;
         break;
-        case 3:
+        case 3: //exits program
         exit(0);
 
     }
@@ -180,20 +184,20 @@ void menuOptions(int option){
 }
 
 int main(int argc, char** argv) {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(640, 480);
-    glutInitWindowPosition(100, 150);
-    glutCreateWindow("Assignment 4");
-    glutDisplayFunc(display);
-    glutMouseFunc(myMouse);
-    glutKeyboardFunc(myKeyboard);
-    glutCreateMenu(menuOptions);
-    glutAddMenuEntry("Flood Fill",1);
-    glutAddMenuEntry("Boundary Fill",2);
-    glutAddMenuEntry("Exit",3);
-    glutAttachMenu(GLUT_RIGHT_BUTTON);
+    glutInit(&argc, argv);// Initializes the GLUT library and processes command line arguments
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);// Sets the display mode with single buffer, RGB color, and depth buffer
+    glutInitWindowSize(640, 480);// Sets the initial window size to 640x480 pixels
+    glutInitWindowPosition(100, 150);// Sets the initial window position to (100,150) on screen
+    glutCreateWindow("Assignment 4");// Creates a window with the title "Assignment 4"
+    glutDisplayFunc(display);// Registers the display callback function for window redraws
+    glutMouseFunc(myMouse);// Registers the mouse callback function for mouse events
+    glutKeyboardFunc(myKeyboard);// Registers the keyboard callback function for key presses
+    glutCreateMenu(menuOptions);// Creates a popup menu with the specified callback function
+    glutAddMenuEntry("Flood Fill",1);// Adds "Flood Fill" as the first menu option with ID 1
+    glutAddMenuEntry("Boundary Fill",2);// Adds "Boundary Fill" as the second menu option with ID 2
+    glutAddMenuEntry("Exit",3);// Adds "Exit" as the third menu option with ID 3
+    glutAttachMenu(GLUT_RIGHT_BUTTON);// Attaches the menu to the right mouse button
     myInit();
-    glutMainLoop();
+    glutMainLoop();//Starts together the main infinite loop
     return 0;
 }
