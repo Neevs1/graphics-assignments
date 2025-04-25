@@ -436,7 +436,9 @@ void update(int value) {
     if (!moonRisen) {
         sunX += 0.01f;  // Move the sun only if the moon hasn't risen yet
         if (sunX > 1.2f) sunX = -1.2f;
-        busX += 0.04f; // Move the bus
+        
+        if(busX > 0.35 && busX < 0.45f) {busX += 0.005f;} // Slow down bus
+        else{ busX += 0.04f;} // Normal speed
         if(busX > 1.2f) busX = -1.2f; // Reset bus position
     }
 
