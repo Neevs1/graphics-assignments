@@ -2,12 +2,15 @@
 #include <cmath>
 #include <iostream>
 
-float sunX = -1.0f;         // Initial position of the sun
+
 float riverOffset = 0.0f;   // River offset for animation
 float birdX = -1.0f;        // Initial position of birds
-float moonY = -0.4f;        // Initial Y position of the moon
-float moonX = -1.0f;        // Initial X position of the moon
-bool moonRisen = false;     // Flag to track if the moon has risen
+float sunX = -1.0f;
+float sunY = -0.2f;  // Added vertical position for sun
+float moonX = -1.0f;
+float moonY = -0.4f;
+bool moonRisen = false;
+
 bool birdUp = false;       // Flag to track if the bird is flying up
 float busX = 0;            // Initial position of the bus
 float busY = 0;            // Initial position of the bus
@@ -19,14 +22,14 @@ void init() {
 }
 
 void drawSun() {
-    if (!moonRisen) {  // Stop the sun once the moon has risen
+    if (!moonRisen) {
         glColor3f(1.0f, 1.0f, 0.0f);
         glBegin(GL_POLYGON);
-        for (int i = -1.0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             float angle = 2.0f * 3.1416f * i / 100;
             float x = 0.1f * cos(angle);
             float y = 0.1f * sin(angle);
-            glVertex2f(sunX + x, 0.8f + y);
+            glVertex2f(sunX + x, sunY + y);
         }
         glEnd();
     }
@@ -34,13 +37,13 @@ void drawSun() {
 
 void drawMoon() {
     if (moonRisen) {
-        glColor3f(1.0f, 1.0f, 1.0f);  // White color for moon
+        glColor3f(1.0f, 1.0f, 1.0f);
         glBegin(GL_POLYGON);
         for (int i = 0; i < 100; i++) {
             float angle = 2.0f * 3.1416f * i / 100;
             float x = 0.1f * cos(angle);
             float y = 0.1f * sin(angle);
-            glVertex2f(moonX+x, 0.75f+ y); // Moving moon position
+            glVertex2f(moonX + x, moonY + y);
         }
         glEnd();
     }
@@ -434,39 +437,44 @@ void display() {
 
 void update(int value) {
     if (!moonRisen) {
-        sunX += 0.01f;  // Move the sun only if the moon hasn't risen yet
-        if (sunX > 1.2f) sunX = -1.2f;
+        sunX += 0.01f;
+        // Parabolic trajectory for sun (lower at sides, higher in middle)
+        sunY = -0.2f + 0.8f * (1.0f - pow((sunX + 1.0f)/2.0f - 0.5f, 2));
         
-        if(busX > 0.35 && busX < 0.45f) {busX += 0.005f;} // Slow down bus
-        else{ busX += 0.04f;} // Normal speed
-        if(busX > 1.2f) busX = -1.2f; // Reset bus position
+        if (sunX > 1.2f) {
+            sunX = -1.2f;
+            sunY = -0.2f;
+            moonRisen = true;
+        }
+        
+        // Bus movement (unchanged)
+        if(busX > 0.35 && busX < 0.45f) { busX += 0.005f; }
+        else { busX += 0.04f; }
+        if(busX > 1.2f) busX = -1.2f;
     }
 
-    riverOffset += 0.002f;  // Increase the speed of the river flow
+    if (moonRisen) {
+        moonX += 0.01f;
+        // Parabolic trajectory for moon (opposite of sun)
+        moonY = -0.2f + 0.8f * (1.0f - pow((moonX + 1.0f)/2.0f - 0.5f, 2));
+        
+        if (moonX > 1.2f) {
+            moonX = -1.2f;
+            moonY = -0.4f;
+            moonRisen = false;
+        }
+    }
+
+    // Rest of the update function remains the same...
+    riverOffset += 0.002f;
     if (riverOffset > 2.0f) riverOffset = 0.0f;
 
     birdX += 0.03f;
     if (birdX > 1.2f) birdX = -1.2f;
     if((int)(100*birdX) % 2 == 0){
-        birdUp = !birdUp; // Change the direction of the bird's flight
+        birdUp = !birdUp;
     }else{
-        birdUp = !birdUp; // Change the direction of the bird's flight
-    }
-
-    // Make the moon rise after some time
-    if (!moonRisen && sunX > 1.0f) {
-        moonRisen = true;
-    }
-    if(moonRisen) {
-        moonX += 0.01f; // Move the moon up
-       
-       
-    }
-    if (moonRisen && moonX > 1.0f) {
-        moonRisen = false; // Reset the moon position
-        sunX = -1.0f; // Reset the sun position
-        moonX = -1.2f; // Reset the moon position
-        
+        birdUp = !birdUp;
     }
 
     glutPostRedisplay();
