@@ -1,18 +1,39 @@
 #include <cmath>
-#include<iostream>
-#include <GL/glut.h> 
+#include <iostream>
+#include <GL/glut.h>
+#include <cstdlib>
+#include <ctime>
+
+// Global parameters
+const float W = 0.3f;  // Weight factor (fractional dimension)
+const float MAX_OFFSET = 0.5f; // Maximum displacement factor
 
 void init() 
 {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glMatrixMode(GL_PROJECTION);      
-    gluOrtho2D(0.0, 500.0, 0.0, 500.0); 
+    gluOrtho2D(0.0, 500.0, 0.0, 500.0);
+    srand(time(0)); // Seed random number generator
 }
 
-void drawKochCurve(int x1, int y1, int x2, int y2, int depth) 
+// Returns a random value between -1 and 1
+float gaussRandom() 
 {
-    if (depth == 0) 
+    return 2.0f * (rand() / (float)RAND_MAX) - 1.0f;
+}
+
+// Calculate length of segment
+float segmentLength(float x1, float y1, float x2, float y2) 
+{
+    return sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+}
+
+// Recursive fractal line generation
+void fractalLine(float x1, float y1, float x2, float y2, int depth) 
+{
+    if (depth <= 0) 
     {
+        // Base case: draw straight line
         glBegin(GL_LINES);
         glVertex2f(x1, y1);
         glVertex2f(x2, y2);
@@ -20,40 +41,44 @@ void drawKochCurve(int x1, int y1, int x2, int y2, int depth)
         return;
     }
 
-    float dx = (x2 - x1) / 3.0;
-    float dy = (y2 - y1) / 3.0;
+    // Calculate midpoint
+    float midX = (x1 + x2) / 2.0f;
+    float midY = (y1 + y2) / 2.0f;
 
-    float x3 = x1 + dx;
-    float y3 = y1 + dy;
+    // Calculate segment length
+    float L = segmentLength(x1, y1, x2, y2);
 
-    float x5 = x2 - dx;
-    float y5 = y2 - dy;
+    // Add displacement to midpoint
+    float dx = L * W * MAX_OFFSET * gaussRandom();
+    float dy = L * W * MAX_OFFSET * gaussRandom();
 
-    float x4 = (x3 + x5) / 2 - (y5 - y3) * sqrt(3) / 2;
-    float y4 = (y3 + y5) / 2 + (x5 - x3) * sqrt(3) / 2;
+    // Displace the midpoint
+    midX += dx;
+    midY += dy;
 
-    drawKochCurve(x1, y1, x3, y3, depth - 1);
-    drawKochCurve(x3, y3, x4, y4, depth - 1);
-    drawKochCurve(x4, y4, x5, y5, depth - 1);
-    drawKochCurve(x5, y5, x2, y2, depth - 1);
+    // Recursively process the two new segments
+    fractalLine(x1, y1, midX, midY, depth - 1);
+    fractalLine(midX, midY, x2, y2, depth - 1);
 }
 
 void display() 
 {
     glClear(GL_COLOR_BUFFER_BIT); 
-    glColor3f(0.0, 0.0, 1.0); 
-    drawKochCurve(100.0, 200.0, 400.0, 200.0, 4); 
+    glColor3f(0.0, 0.0, 1.0); // Blue color
+    
+    // Draw fractal line between two points with 8 recursion levels
+    fractalLine(50.0, 250.0, 450.0, 250.0, 8);
+    
     glFlush(); 
 }
 
-
-int main(int argc,char** argv) 
+int main(int argc, char** argv) 
 {
-    glutInit(&argc,argv);                          
-    glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);    
-    glutInitWindowSize(640, 480);                  
-    glutInitWindowPosition(100,100);               
-    glutCreateWindow("Fractals");       
+    glutInit(&argc, argv);                          
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);    
+    glutInitWindowSize(500, 500);                  
+    glutInitWindowPosition(100, 100);               
+    glutCreateWindow("Fractal Line with Midpoint Displacement");       
     init();                                         
     glutDisplayFunc(display);                       
     glutMainLoop();                                 
